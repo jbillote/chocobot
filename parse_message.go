@@ -11,7 +11,9 @@ import (
     // "github.com/Sirupsen/logrus"
 )
 
-func ParseMessage(session *discordgo.Session, message *discordgo.MessageCreate, config *models.Config) {
+func ParseMessage(session *discordgo.Session, message *discordgo.MessageCreate,
+    config *models.Config) {
+
     // Make sure bot doesn't attempt to parse its own messages
     if message.Author.ID == botUID {
         return

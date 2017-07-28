@@ -6,7 +6,9 @@ import (
     "github.com/Sirupsen/logrus"
 )
 
-func SafeSendMessage(session *discordgo.Session, channelID string, message string) *discordgo.Message {
+func SafeSendMessage(session *discordgo.Session, channelID string,
+    message string) *discordgo.Message {
+
     val, err := session.ChannelMessageSend(channelID, message)
 
     if err != nil {

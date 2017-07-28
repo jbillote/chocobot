@@ -6,7 +6,9 @@ import (
     "github.com/Sirupsen/logrus"
 )
 
-func SafeSendEmbed(session *discordgo.Session, channelID string, embed *discordgo.MessageEmbed) *discordgo.Message {
+func SafeSendEmbed(session *discordgo.Session, channelID string,
+    embed *discordgo.MessageEmbed) *discordgo.Message {
+
     val, err := session.ChannelMessageSendEmbed(channelID, embed)
 
     if err != nil {

@@ -17,7 +17,9 @@ import (
 
 var classes map[int]string
 
-func FFLogs(session *discordgo.Session, message *discordgo.MessageCreate, config *models.Config) error {
+func FFLogs(session *discordgo.Session, message *discordgo.MessageCreate,
+    config *models.Config) error {
+
     // Init classes map if necessary
     if len(classes) == 0 {
         err := initClasses(config)
@@ -39,7 +41,9 @@ func FFLogs(session *discordgo.Session, message *discordgo.MessageCreate, config
     server := p[3]
     region := p[4]
 
-    requestURL := constants.FFLOGS_API_ENDPOINT + constants.FFLOGS_API_CHARACTER + "/" + firstName + "%20" + lastName + "/" + server + "/" + region + "?api_key=" + config.FFLogsApiKey
+    requestURL := constants.FFLOGS_API_ENDPOINT +
+        constants.FFLOGS_API_CHARACTER + "/" + firstName + "%20" + lastName +
+        "/" + server + "/" + region + "?api_key=" + config.FFLogsApiKey
 
     r, err := http.Get(requestURL)
     if err != nil {
@@ -89,7 +93,9 @@ func FFLogs(session *discordgo.Session, message *discordgo.MessageCreate, config
     }
 
     if len(o1sEncounters) == 0 {
-        util.SafeSendMessage(session, message.ChannelID, "No current statistics available for " + strings.Title(firstName + " " + lastName) + ".")
+        util.SafeSendMessage(session, message.ChannelID, "No current " +
+            "statistics available for " + strings.Title(firstName + " " +
+            lastName) + ".")
         return nil
     }
 
@@ -101,7 +107,9 @@ func FFLogs(session *discordgo.Session, message *discordgo.MessageCreate, config
             SetDescription("For " + strings.Title(firstName + " " + lastName)).
             SetColor(0x0000ff)
         for _, e := range o1sEncounters {
-            o1sEmbed.AddField(classes[e.Class], "**" + strconv.Itoa(int(e.DPS)) + " DPS**, **" + strconv.Itoa(encounterPercentile(e)) + "th** percentile")
+            o1sEmbed.AddField(classes[e.Class], "**" +
+                strconv.Itoa(int(e.DPS)) + " DPS**, **" +
+                strconv.Itoa(encounterPercentile(e)) + "th** percentile")
         }
 
         embeds = append(embeds, o1sEmbed)
@@ -113,7 +121,9 @@ func FFLogs(session *discordgo.Session, message *discordgo.MessageCreate, config
             SetDescription("For " + strings.Title(firstName + " " + lastName)).
             SetColor(0x7d7c7b)
         for _, e := range o2sEncounters {
-            o2sEmbed.AddField(classes[e.Class], "**" + strconv.Itoa(int(e.DPS)) + " DPS**, **" + strconv.Itoa(encounterPercentile(e)) + "th** percentile")
+            o2sEmbed.AddField(classes[e.Class], "**" +
+                strconv.Itoa(int(e.DPS)) + " DPS**, **" +
+                strconv.Itoa(encounterPercentile(e)) + "th** percentile")
         }
 
         embeds = append(embeds, o2sEmbed)
@@ -125,7 +135,9 @@ func FFLogs(session *discordgo.Session, message *discordgo.MessageCreate, config
             SetDescription("For " + strings.Title(firstName + " " + lastName)).
             SetColor(0xff0000)
         for _, e := range o3sEncounters {
-            o3sEmbed.AddField(classes[e.Class], "**" + strconv.Itoa(int(e.DPS)) + " DPS**, **" + strconv.Itoa(encounterPercentile(e)) + "th** percentile")
+            o3sEmbed.AddField(classes[e.Class], "**" +
+                strconv.Itoa(int(e.DPS)) + " DPS**, **" +
+                strconv.Itoa(encounterPercentile(e)) + "th** percentile")
         }
 
         embeds = append(embeds, o3sEmbed)
@@ -137,7 +149,9 @@ func FFLogs(session *discordgo.Session, message *discordgo.MessageCreate, config
             SetDescription("For " + strings.Title(firstName + " " + lastName)).
             SetColor(0x00007f)
         for _, e := range exdeathEncounters {
-            exdeathEmbed.AddField(classes[e.Class], "**" + strconv.Itoa(int(e.DPS)) + " DPS**, **" + strconv.Itoa(encounterPercentile(e)) + "th** percentile")
+            exdeathEmbed.AddField(classes[e.Class], "**" +
+                strconv.Itoa(int(e.DPS)) + " DPS**, **" +
+                strconv.Itoa(encounterPercentile(e)) + "th** percentile")
         }
 
         embeds = append(embeds, exdeathEmbed)
@@ -150,7 +164,9 @@ func FFLogs(session *discordgo.Session, message *discordgo.MessageCreate, config
             SetDescription("For " + strings.Title(firstName + " " + lastName)).
             SetColor(0x00ff00)
         for _, e := range neoExdeathEncounters {
-            neoExdeathEmbed.AddField(classes[e.Class], "**" + strconv.Itoa(int(e.DPS)) + " DPS**, **" + strconv.Itoa(encounterPercentile(e)) + "th** percentile")
+            neoExdeathEmbed.AddField(classes[e.Class], "**" +
+                strconv.Itoa(int(e.DPS)) + " DPS**, **" +
+                strconv.Itoa(encounterPercentile(e)) + "th** percentile")
         }
 
         embeds = append(embeds, neoExdeathEmbed)
@@ -166,7 +182,8 @@ func FFLogs(session *discordgo.Session, message *discordgo.MessageCreate, config
 func initClasses(config *models.Config) error {
     classes = make(map[int]string)
 
-    r, err := http.Get(constants.FFLOGS_API_ENDPOINT + constants.FFLOGS_API_CLASSES + "?api_key=" + config.FFLogsApiKey)
+    r, err := http.Get(constants.FFLOGS_API_ENDPOINT +
+        constants.FFLOGS_API_CLASSES + "?api_key=" + config.FFLogsApiKey)
     if err != nil {
         return err
     }
@@ -186,5 +203,6 @@ func initClasses(config *models.Config) error {
 }
 
 func encounterPercentile(encounter models.FFLogsEncounter) int {
-    return int(float64(encounter.OutOf - encounter.Rank) / float64(encounter.OutOf) * 100)
+    return int(float64(encounter.OutOf - encounter.Rank) /
+        float64(encounter.OutOf) * 100)
 }

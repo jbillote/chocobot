@@ -25,7 +25,9 @@ func onReady(session *discordgo.Session, e *discordgo.Ready) {
     botUID = e.User.ID
 }
 
-func onMessageCreate(session *discordgo.Session, message *discordgo.MessageCreate) {
+func onMessageCreate(session *discordgo.Session,
+    message *discordgo.MessageCreate) {
+
     // Parse messages in their own thread to prevent stalling due to API calls
     go ParseMessage(session, message, &config)
 }

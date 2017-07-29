@@ -20,7 +20,9 @@ func ParseMessage(session *discordgo.Session, message *discordgo.MessageCreate,
     }
 
     // Stop parsing if the message wasn't a command
-    if message.Content[0:1] != config.CommandPrefix {
+    if len(message.Content) < 1 || message.Content[0:1] !=
+        config.CommandPrefix {
+        
         return
     }
 
